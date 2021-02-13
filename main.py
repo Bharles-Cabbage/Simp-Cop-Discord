@@ -29,5 +29,4 @@ async def on_message(msg):
     if msg.content in ["cute", "beautiful", "sed"]:
         await msg.channel.send("SIMPPPP DETECTEDDD")
 
-
 bot.run(botToken)
