@@ -1,10 +1,22 @@
 import os
 import discord
+
+from random import randint
 from dotenv import load_dotenv
 
 # Load environment variables from .env file
 load_dotenv()
 botToken = os.getenv("DISCORD_TOKEN")
+
+
+# List of simping words
+words = ["erotic", "cute", "beautiful", "sexy", "hot", "lovely", "beauty", "hawt", "kawai", "pretty"]
+
+# List of messages to be sent
+messages = ["Simping has been found, and {0.author.mention} is the culprit!!", "Ahh, there you are. {0.author.mention} aka. Simp Lord!"]
+
+# List of nicknames to be given
+nicknames = ["I'm a simp", "Simp Lord", "I lick monitors watching Poki", "Your bathwater makes me wet", "I drool for your feet pics", "I'm a Simp and not ashamed"]
 
 # Client refers to the bot
 bot = discord.Client()
@@ -26,7 +38,21 @@ async def on_ready():
 
 @bot.event
 async def on_message(msg):
-    if msg.content in ["cute", "beautiful", "sed"]:
-        await msg.channel.send("SIMPPPP DETECTEDDD")
+    msgList = msg.content.replace("."," ").strip().lower().split(" ")
+
+    # Find for a complement in the message sent
+    if any(word in words for word in msgList):
+
+        # Random nickname
+        nickname = nicknames[randint(0, len(nicknames)-1)]
+
+        # Change their nickname in server 
+        await msg.author.edit(nick=nickname)
+        
+        # Select a message to be sent, and mention the user that simped
+        random_message = messages[randint(0, len(messages)-1)].format(msg)
+
+        # Send warning
+        await msg.channel.send(random_message)
 
 bot.run(botToken)
