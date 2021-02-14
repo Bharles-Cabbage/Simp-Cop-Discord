@@ -1,7 +1,9 @@
 import os
-import discord
-
+import io
+import aiohttp
 from random import randint
+
+import discord
 from dotenv import load_dotenv
 
 # Load environment variables from .env file
@@ -11,6 +13,8 @@ botToken = os.getenv("DISCORD_TOKEN")
 # Client refers to the bot
 bot = discord.Client()
 
+# Simp phrases
+sentences = ["die in your thighs", "nice feet", "hot feet", "feet pics", "nice rack", "nice boobs", "nice ass", "nice assets", "milkers", "milk truck", "big boobs", "big ass","spank worthy ass","perky breasts"]
 
 # List of simping words
 words = ["erotic", "cute", "beautiful", "sexy", "hot", "lovely", "beauty", "hawt", "kawai", "pretty"]
@@ -50,13 +54,16 @@ async def on_ready():
 
 @bot.event
 async def on_message(msg):
-   
-    #Replace symbols with white spaces, change case, then split into list of words
-    msgList = replaceMultiple(msg.content, [".", ",", "|", "#"], " ").strip().lower().split(" ")
-
+    
+    simp = False
     # Find for a complement in the message sent
-    if any(word in words for word in msgList):
+    for i in sentences:
+        if i in msg.content:
+            simp = True
 
+    if simp or any(word in words for word in msgList):
+        #Replace symbols with white spaces, change case, then split into list of words
+        msgList = replaceMultiple(msg.content, [".", ",", "|", "#"], " ").strip().lower().split(" ")
         # Random nickname
         nickname = nicknames[randint(0, len(nicknames)-1)]
 
