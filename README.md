@@ -1,6 +1,5 @@
 ## Simp-Cop
 
-- - - 
 
 **Description** :
 A discord bot that detects simping and changes the respective user's nickname.
