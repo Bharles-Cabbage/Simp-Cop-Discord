@@ -8,6 +8,9 @@ from dotenv import load_dotenv
 load_dotenv()
 botToken = os.getenv("DISCORD_TOKEN")
 
+# Client refers to the bot
+bot = discord.Client()
+
 
 # List of simping words
 words = ["erotic", "cute", "beautiful", "sexy", "hot", "lovely", "beauty", "hawt", "kawai", "pretty"]
@@ -18,8 +21,17 @@ messages = ["Simping has been found, and {0.author.mention} is the culprit!!", "
 # List of nicknames to be given
 nicknames = ["I'm a simp", "Simp Lord", "I lick monitors watching Poki", "Your bathwater makes me wet", "I drool for your feet pics", "I'm a Simp and not ashamed"]
 
-# Client refers to the bot
-bot = discord.Client()
+# Helper function to replace multiple characters 
+def replaceMultiple(mainString, toBeReplaces, newString):
+    # Iterate over the strings to be replaced
+    for elem in toBeReplaces :
+        # Check if string is in the main string
+        if elem in mainString :
+            # Replace the string
+            mainString = mainString.replace(elem, newString)
+
+    return  mainString
+
 
 @bot.event
 async def on_ready():
@@ -38,7 +50,9 @@ async def on_ready():
 
 @bot.event
 async def on_message(msg):
-    msgList = msg.content.replace("."," ").strip().lower().split(" ")
+   
+    #Replace symbols with white spaces, change case, then split into list of words
+    msgList = replaceMultiple(msg.content, [".", ",", "|", "#"], " ").strip().lower().split(" ")
 
     # Find for a complement in the message sent
     if any(word in words for word in msgList):
