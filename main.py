@@ -1,10 +1,14 @@
+# Built in modules
 import os
-import io
-import aiohttp
 from random import randint
 
+# Third Party libs and modules
 import discord
 from dotenv import load_dotenv
+
+# Local import
+from sentences import phrases
+from words import words
 
 # Load environment variables from .env file
 load_dotenv()
@@ -12,12 +16,6 @@ botToken = os.getenv("DISCORD_TOKEN")
 
 # Client refers to the bot
 bot = discord.Client()
-
-# Simp phrases
-sentences = ["die in your thighs", "nice feet", "hot feet", "feet pics", "nice rack", "nice boobs", "nice ass", "nice assets", "milkers", "milk truck", "big boobs", "big ass","spank worthy ass","perky breasts"]
-
-# List of simping words
-words = ["erotic", "cute", "beautiful", "sexy", "hot", "lovely", "beauty", "hawt", "kawai", "pretty"]
 
 # List of messages to be sent
 messages = ["Simping has been found, and {0.author.mention} is the culprit!!", "Ahh, there you are. {0.author.mention} aka. Simp Lord!"]
@@ -56,14 +54,16 @@ async def on_ready():
 async def on_message(msg):
     
     simp = False
+
     # Find for a complement in the message sent
-    for i in sentences:
-        if i in msg.content:
+    for i in phrases:
+        if i in msg.content.lower():
             simp = True
 
+    #Replace symbols with white spaces, change case, then split into list of words
+    msgList = replaceMultiple(msg.content, [".", ",", "|", "#", "?"], " ").strip().lower().split(" ")
+
     if simp or any(word in words for word in msgList):
-        #Replace symbols with white spaces, change case, then split into list of words
-        msgList = replaceMultiple(msg.content, [".", ",", "|", "#"], " ").strip().lower().split(" ")
         # Random nickname
         nickname = nicknames[randint(0, len(nicknames)-1)]
 
